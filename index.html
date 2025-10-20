@@ -6,28 +6,33 @@
     <title>VakuutusAukot – Kevyt versio (Vanilla JS)</title>
     <style>
       :root { 
-        --primary:#2e5cb8; 
-        --bg:#f3f5f8; 
-        --card:#ffffff; 
-        --border:#d2d7e0; 
-        --text:#1c2333; 
+        /* Muse palette – colorful and fresh */
+        --primary:#5856d6; /* indigo */
+        --secondary:#ff7a59; /* coral (accents only) */
+        --tertiary:#2ec5b6; /* mint (accents only) */
+        --accent:#ffbf3f; /* mango (subtle accent) */
+        --bg:#f2f5ff;
+        --card:#f7f9ff; 
+        --cardTint: rgba(88,86,214,.06);
+        --border:#d7dbef; 
+        --text:#151a2d; 
         --muted:#616a7f; 
-        --accent:#8a2be2;
       }
       body { 
         margin:0; 
         font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial; 
         color:var(--text); 
         background:
-          radial-gradient(900px 600px at 15% -10%, rgba(46,92,184,.12), transparent),
-          radial-gradient(700px 500px at 110% 0%, rgba(138,43,226,.10), transparent),
-          linear-gradient(180deg, #eef5ff 0%, #e6f0ff 40%, #deebff 100%);
+          radial-gradient(900px 600px at 15% -10%, rgba(88,86,214,.16), transparent),
+          radial-gradient(800px 520px at 110% 0%, rgba(255,122,89,.12), transparent),
+          radial-gradient(700px 520px at 40% 120%, rgba(46,197,182,.12), transparent),
+          conic-gradient(from 210deg at 70% -20%, #eef3ff, #f5faff, #eef3ff);
       }
       .container { max-width: 1120px; margin: 0 auto; padding: 24px; }
       h1 { margin: 0 0 8px; color: var(--text); letter-spacing:.2px; }
       p.muted { color:var(--muted); margin-top:0; }
-      .card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:20px; position:relative; overflow:hidden; transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; will-change: transform; }
-      .card:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(0,0,0,.08); border-color: #c5cbd6; }
+      .card { background: linear-gradient(180deg, var(--card), #ffffff 80%); background: linear-gradient(180deg, var(--card), color-mix(in srgb, var(--card) 80%, #fff)); border:1px solid var(--border); border-radius:16px; padding:20px; position:relative; overflow:hidden; transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; box-shadow: inset 0 0 0 9999px var(--cardTint); will-change: transform; }
+      .card:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(0,0,0,.06); border-color: #c5cbd6; }
       .grid { display:grid; grid-template-columns: 1fr; gap:16px; align-items:start; }
       @media (min-width: 720px){ .grid{ grid-template-columns: 1fr 1fr; } }
       label { display:block; color:var(--text); margin:10px 0 6px; font-weight:600; }
@@ -47,25 +52,40 @@
       input[type="date"] { background:#f9fafb url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%232e5cb8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>') no-repeat right 12px center; background-size:18px; padding-right:44px; }
       .row { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
       .actions { display:flex; gap:10px; justify-content:flex-end; margin-top:14px; }
-      button { background:var(--primary); color:white; border:none; border-radius:12px; padding:12px 16px; font-weight:700; cursor:pointer; box-shadow: 0 6px 16px rgba(46,92,184,.25); transition: transform .15s ease, box-shadow .15s ease, filter .15s ease; will-change: transform; }
-      button:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(46,92,184,.35); filter: brightness(1.02); }
+      button { 
+        background: linear-gradient(135deg, color-mix(in srgb, var(--primary) 92%, #fff), color-mix(in srgb, var(--primary) 84%, #fff)); 
+        color:white; border:none; border-radius:12px; padding:12px 16px; font-weight:700; cursor:pointer; 
+        box-shadow: 0 6px 16px rgba(88,86,214,.20), 0 2px 0 rgba(0,0,0,.03) inset; 
+        transition: transform .15s ease, box-shadow .15s ease, filter .15s ease; will-change: transform; 
+      }
+      button:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(88,86,214,.28); filter: brightness(1.02); }
       button:active { transform: translateY(0); box-shadow: 0 6px 16px rgba(74,158,255,.25); }
-      button.secondary { background:#eef2f7; color:var(--primary); border:1px solid var(--border); box-shadow:none; }
+      button.secondary { background:linear-gradient(135deg, #eef2ff, #f4f8ff); color:var(--primary); border:1px solid var(--border); box-shadow:none; }
       .magnetic { perspective: 800px; }
       .magnetic > * { will-change: transform; }
       .list { display:grid; gap:12px; margin-top:14px; }
       .policy { background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.005)); border:1px solid var(--border); border-radius:14px; padding:14px; display:flex; flex-direction:column; gap:8px; transition:transform .15s ease, border-color .15s ease; }
       .policy:hover { transform: translateY(-1px); border-color: rgba(74,158,255,.45); }
       .policy .meta { display:flex; gap:10px; flex-wrap:wrap; color:#47506b; font-size:14px; }
-      .tag { padding:2px 8px; border-radius:999px; border:1px solid var(--border); color:#47506b; background:#f1f3f7; }
+      .tag { padding:2px 8px; border-radius:999px; border:1px solid var(--border); color:#47506b; background:linear-gradient(135deg,#f4f6ff,#f7fbff); }
       .file { color:#2a3350; font-size:14px; }
       .empty { text-align:center; color:#616a7f; padding:20px; border:1px dashed var(--border); border-radius:12px; }
+
+      /* Bionic reading effect */
+      .bionic * { font-variant-ligatures: none; }
+      .bionic .content,
+      .bionic .policy,
+      .bionic .file,
+      .bionic p,
+      .bionic li,
+      .bionic span { --w: 600; }
+      .bionic span.br { font-weight: 700; }
     </style>
   </head>
   <body>
     <div class="container">
       <h1>VakuutusAukot – Kevyt</h1>
-      <p class="muted">Täysin selainpohjainen versio ilman SvelteKitiä. Tiedostot pysyvät muistissa.</p>
+      <p class="muted">Kevyt selainversio: analysoi vakuutusasiakirjat paikallisesti ja vertaa kattavuuksiin.</p>
 
       <div class="grid">
         <div class="card magnetic">
@@ -110,7 +130,13 @@
         <div class="card magnetic">
           <h2 style="margin:0 8px 8px 0; display:flex; align-items:center; justify-content:space-between; gap:8px">
             <span>Vakuutukseni</span>
-            <button id="analyzeAll" class="secondary magnetic">Analysoi kaikki</button>
+            <div style="display:flex; gap:8px; align-items:center">
+              <label style="display:flex; gap:6px; align-items:center; color:var(--muted); font-weight:600">
+                <input id="bionicToggle" type="checkbox" checked style="accent-color: var(--primary)">
+                Bionic reading
+              </label>
+              <button id="analyzeAll" class="secondary magnetic">Analysoi kaikki</button>
+            </div>
           </h2>
           <div id="list" class="list">
             <div class="empty">Ei vakuutuksia vielä</div>

@@ -430,4 +430,30 @@ function openReaderForEntry(entry){
   modal.onclick = (e) => { if (e.target === modal) modal.classList.remove('show'); };
 }
 
+// --- Bionic reading toggle ---
+const bionicToggle = document.getElementById('bionicToggle');
+if (bionicToggle){
+  const applyBionic = (enabled) => {
+    document.body.classList.toggle('bionic', enabled);
+    // Wrap first syllable/segment of each file snippet for emphasis
+    const snippets = document.querySelectorAll('.file');
+    for (const el of snippets){
+      const txt = el.textContent || '';
+      const m = txt.match(/^(•\s*\([^)]*\)\s*…\s*)?(.*)$/);
+      const prefix = m && m[1] ? m[1] : '';
+      const content = m && m[2] ? m[2] : txt;
+      const words = content.split(/(\s+)/);
+      for (let i=0;i<words.length;i+=2){
+        const w = words[i];
+        if (!w) continue;
+        const cut = Math.ceil(w.length*0.45);
+        words[i] = `<span class=\"br\">${w.slice(0,cut)}</span>${w.slice(cut)}`;
+      }
+      el.innerHTML = prefix + words.join('');
+    }
+  };
+  applyBionic(bionicToggle.checked);
+  bionicToggle.addEventListener('change', (e)=> applyBionic(e.target.checked));
+}
+
 
